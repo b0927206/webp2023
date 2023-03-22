@@ -6,25 +6,29 @@
 </div>
 <script>
 window.onload = function(){
-                                                               
-                                                               }
+   container.textContent = "";
+   container.textContent = randomString(getRandomInt(1,3));         
+}
 var container =document.getElementById('container');
 window.addEventListener("keyup", function(e){
                         console.log(e.key);
 if(e.key == 'Escape'){
-  container.textContent ="123";
+  container.textContent ="";
 }
-else if(e.key == 'a'){
+else if(e.key == container.textContent.charAt(0)){
   var str = container.textContent;
   container.textContent =str.substring(1, str.length);
 }
 else{
-  container.textContent += e.key;
+  container.textContent += randomString(getRandomInt(1,3));
 }
                         });
-function randomString() {
-    var str123 = "123";
-    length = (Math.floor(Math.random() * 4));
+function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+function randomString(length) {
     var strabc = 'abcdefghijklmnopqrstuvwxyz';
     var result = '';
     for (var i = length; i > 0; --i) 
