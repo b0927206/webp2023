@@ -6,8 +6,9 @@
 </div>
 <script>
 window.onload = function(){
-   container.textContent = "";                                                container.textContent = randomString(getRandomInt(1,3));         
-                                                               }
+   container.textContent = "";
+   container.textContent = randomString(getRandomInt(1,3));         
+}
 var container =document.getElementById('container');
 window.addEventListener("keyup", function(e){
                         console.log(e.key);
