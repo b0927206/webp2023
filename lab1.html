@@ -1,10 +1,35 @@
 <link herf="http://cdn.jsdelivr.net/npm/bootstrap@5/0/2/dist/css/bootstrap/min.css rel="stylesheet" integruty="sha384-EVSTQN3/azprGIAnm3pgm9Nao0Yz1z1ztcQTwFspd3yD65VohhpuuCOmLASjc" crossorigin="anoymous">
-<script>
-window.onload =function(){
-  document.getElementById()
-}
-</script>
+
 <budy>
 <div id="container" tabindex='0' class="blockquote text-nowrap">
+   
 </div>
+<script>
+window.onload = function(){
+                                                               
+                                                               }
+var container =document.getElementById('container');
+window.addEventListener("keyup", function(e){
+                        console.log(e.key);
+if(e.key == 'Escape'){
+  container.textContent ="123";
+}
+else if(e.key == 'a'){
+  var str = container.textContent;
+  container.textContent =str.substring(1, str.length);
+}
+else{
+  container.textContent += e.key;
+}
+                        });
+function randomString() {
+    var str123 = "123";
+    length = (Math.floor(Math.random() * 4));
+    var strabc = 'abcdefghijklmnopqrstuvwxyz';
+    var result = '';
+    for (var i = length; i > 0; --i) 
+        result += strabc(Math.floor(Math.random() * strabc.length));
+    return result;
+};
+</script>
 </budy>
