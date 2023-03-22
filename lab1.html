@@ -6,9 +6,8 @@
 </div>
 <script>
 window.onload = function(){
-   container.textContent = "";
-   container.textContent = randomString(getRandomInt(1,3));         
-}
+   container.textContent = "";                                                container.textContent = randomString(getRandomInt(1,3));         
+                                                               }
 var container =document.getElementById('container');
 window.addEventListener("keyup", function(e){
                         console.log(e.key);
@@ -27,12 +26,12 @@ function getRandomInt(min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+}
 function randomString(length) {
     var strabc = 'abcdefghijklmnopqrstuvwxyz';
     var result = '';
     for (var i = length; i > 0; --i) 
-        result += strabc(Math.floor(Math.random() * strabc.length));
+        result += strabc.charAt(Math.floor(Math.random() * strabc.length));
     return result;
 };
 </script>
