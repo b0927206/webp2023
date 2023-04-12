@@ -32,12 +32,25 @@
   <div id='gallery' class="gallery"></div>
 </budy>
 <script>
-  var dataUrl = 'https://api.unsplash.com/photos?client_id=812193ef71ca946e361ed541979a0cfd91e9419a19235fd05f51ea14233f020a&per_page=30';
-  function getimg(){
-  
+var dataUrl = 'https://api.unsplash.com/photos?client_id=812193ef71ca946e361ed541979a0cfd91e9419a19235fd05f51ea14233f020a&per_page=30';
+
+function getimg(){
+  var xhr = new XMLHttpRequest(); 
+  xhr.open('GET',dataUrl, true);
+  xhr.send();
+  xhr.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){
+      dataset = JSON.parse(this.responseText);
+      add_new_img(dataset);
+    }
+  }
 }
-  function add_new_img(dataset){
-  
+function add_new_img(dataset){
+  var gallery = document.getElementById('gallery');
+  for (var i = 0; i < dataset.length; i++) {
+      var img = document.createElement('img');
+      img.src = dataset[i].urls.small;
+      gallery.appendChild(img);
+  }
 }
-  
 </script>  
