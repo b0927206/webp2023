@@ -48,17 +48,51 @@ xhr.send();
 xhr.onreadystatechange = function(){
   if(this.readyState == 4 && this.status == 200){
     var dataset = JSON.parse(this.responseText);
-    addNewData(dataset);
+    var totalpage = addNewData(dataset);
  }
 };
 function addNewData(dataset) { 
   var myTable = document.getElementById("csie");
-  dataset.forEach(function(data, index) {
+  var totalpage = 1;
+  var rowsPerPage = 10;
+  var startIndex = 0;
+  var endIndex = startIndex + rowsPerPage;
+  dataset.slice(startIndex, endIndex).forEach(function(data, index) {
     var row = myTable.insertRow(-1);
     row.insertCell(0).innerHTML = data['title'];
     row.insertCell(1).innerHTML = data['showInfo'] [0] ['location']; 
     row.insertCell(2).innerHTML = data['showInfo'][0]['price'];
- });
+    totalpage = totalpage + 1;
+  });
+  document.getElementById('page').innerHTML = '1/' + totalpage;
+  return totalpage;
 }
+function prepage(totalpage) {
+  const pageEl = document.querySelector('#page');
+  let page = parseInt(pageEl.textContent);
+  if (page > 1) {
+    page--;
+    pageEl.textContent = `第${page}/${totalpage-1}頁`;
+  }
+}
+
+function nextpage(totalpage) {
+  const pageEl = document.querySelector('#page');
+  let page = parseInt(pageEl.textContent);
+  if (page < totalpage-1) {
+    page++;
+    pageEl.textContent = `第${page}/${totalpage-1}頁`;
+  }
+}
+
+
+const searchInput = document.querySelector('#search');
+const output = document.querySelector('#output');
+
+searchInput.addEventListener('input', () => {
+        const searchQuery = searchInput.value;
+        output.textContent = `您正在輸入：${searchQuery}`;
+      });
+
 
 </script>
