@@ -21,6 +21,11 @@ th {
   background-color: #04AA6D; 
   color: white; 
 } 
+.breadcrumb {
+        padding: 12px 0px;
+        list-style: none;
+      }
+.breadcrumb li {display: inline;}
   </style>
 </head>
 <body>
@@ -28,71 +33,96 @@ th {
   搜尋:<input type="text" placeholder="輸入關鍵字" name="search" id="search">
   <div id="output"></div>
   <table id="csie" class="table table-striped table-hover">
-  <tr>
+ <tr>
     <th>名稱</th>
     <th>地點</th>
     <th>票價</th>
   </tr>
+  <tbody></tbody>
 </table>
-<button onclick="prepage(${totalpage})">上一頁</button>
-<label for="page">第<span id="page">1</span>頁</label>
-<button onclick="nextpage(${totalpage})">下一頁</button>
-
+<ul class="breadcrumb">
+    <li ><button onclick="prevPage()">上一頁</button></li>
+    <li id="page"></li>
+    <li><button onclick="nextPage()">下一頁</button></li>
+  </ul>
 </body>
   
 <script>
-  var openUrl="https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
+var openUrl="https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
 var xhr = new XMLHttpRequest(); 
 xhr.open('GET',openUrl, true);
 xhr.send();
 xhr.onreadystatechange = function(){
   if(this.readyState == 4 && this.status == 200){
-    var dataset = JSON.parse(this.responseText);
-    var totalpage = addNewData(dataset);
+    dataset = JSON.parse(this.responseText);
+    addNewData(dataset);
  }
 };
-function addNewData(dataset) { 
-  var myTable = document.getElementById("csie");
-  var totalpage = 1;
-  var rowsPerPage = 10;
-  var startIndex = 0;
+
+var pagenow =1;
+var filteredDataset = []
+var rowsPerPage = 10;
+
+function addNewData(dataset, page = 1) { 
+  var myTable = document.getElementById("csie").getElementsByTagName('tbody')[0];;
+  myTable.innerHTML = '';
+  var startIndex = (page - 1) * rowsPerPage;
   var endIndex = startIndex + rowsPerPage;
-  dataset.slice(startIndex, endIndex).forEach(function(data, index) {
+   var pageData = dataset.slice(startIndex, endIndex);
+  dataset.slice((pagenow-1)*rowsPerPage, endIndex).forEach(function(data, index) {
     var row = myTable.insertRow(-1);
     row.insertCell(0).innerHTML = data['title'];
     row.insertCell(1).innerHTML = data['showInfo'] [0] ['location']; 
     row.insertCell(2).innerHTML = data['showInfo'][0]['price'];
-    totalpage = totalpage + 1;
-  });
-  document.getElementById('page').innerHTML = '1/' + totalpage;
-  return totalpage;
-}
-function prepage(totalpage) {
-  const pageEl = document.querySelector('#page');
-  let page = parseInt(pageEl.textContent);
-  if (page > 1) {
-    page--;
-    pageEl.textContent = `第${page}/${totalpage-1}頁`;
-  }
+ });
+  pagechange();
 }
 
-function nextpage(totalpage) {
-  const pageEl = document.querySelector('#page');
-  let page = parseInt(pageEl.textContent);
-  if (page < totalpage-1) {
-    page++;
-    pageEl.textContent = `第${page}/${totalpage-1}頁`;
-  }
+ function pagechange() {
+            var pageInfo = document.getElementById("pageInfo");
+            var totalpage = Math.ceil(filteredDataset.length / rowsPerPage);
+            var showPage = '';
+            if (filteredDataset.length > 0) {
+                showPage = `第 ${pagenow} 頁 / 共 ${totalpage} 頁`;
+            } 
+            else {
+                showPage = `第 ${pagenow} 頁 / 共 ${Math.ceil(dataset.length / rowsPerPage)} 頁`;
+            }
+            page.innerHTML = showPage;
 }
 
+function searchit() {
+        var ipt = document.getElementById("search").value.toLowerCase();
+        filteredDataset = dataset.filter(function (data) {
+                return data.title.toLowerCase().indexOf(search) > -1;
+            });
+        pagenow = 1;
+        addNewData(filteredDataset, pagenow);
+        pagechange();
+}
 
-const searchInput = document.querySelector('#search');
-const output = document.querySelector('#output');
+function change() {
+      var myTable = document.getElementById("csie");
+      while (myTable.rows.length > 1)
+        myTable.deleteRow(-1);
+      addNewData();
+    }
 
-searchInput.addEventListener('input', () => {
-        const searchQuery = searchInput.value;
-        output.textContent = `您正在輸入：${searchQuery}`;
-      });
+function nextPage() {
+      var data = filteredDataset.length > 0 ? filteredDataset : dataset;
+      if (pagenow < Math.ceil(data.length / rowsPerPage)) {
+          pagenow++;
+          addNewData(data, pagenow);
+      }
+}
+
+function prevPage() {
+      var data = filteredDataset.length > 0 ? filteredDataset : dataset;
+      if (pagenow > 1) {
+          pagenow--;
+          addNewData(data, pagenow);
+      }
+}
 
 
 </script>
