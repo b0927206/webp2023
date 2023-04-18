@@ -66,7 +66,7 @@ var filteredDataset = []
 var rowsPerPage = 10;
 
 function addNewData(dataset, page = 1) { 
-  var myTable = document.getElementById("csie").getElementsByTagName('tbody')[0];;
+  var myTable = document.getElementById("csie").getElementsByTagName('tbody')[0];
   myTable.innerHTML = '';
   var startIndex = (page - 1) * rowsPerPage;
   var endIndex = startIndex + rowsPerPage;
@@ -102,13 +102,6 @@ function searchit() {
         addNewData(filteredDataset, pagenow);
         pagechange();
 }
-
-function change() {
-      var myTable = document.getElementById("csie");
-      while (myTable.rows.length > 1)
-        myTable.deleteRow(-1);
-      addNewData();
-    }
 
 function nextPage() {
       var data = filteredDataset.length > 0 ? filteredDataset : dataset;
