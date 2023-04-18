@@ -96,7 +96,7 @@ function addNewData(dataset, page = 1) {
 function searchit() {
         var ipt = document.getElementById("search").value.toLowerCase();
         filteredDataset = dataset.filter(function (data) {
-                return data.title.toLowerCase().indexOf(search) > -1;
+                return data.title.toLowerCase().indexOf(ipt) > -1;
             });
         pagenow = 1;
         addNewData(filteredDataset, pagenow);
